@@ -3,8 +3,8 @@ Contributors: mehrazmorshed
 Donate link: https://www.buymeacoffee.com/mehrazmorshed
 Tags: hide title, hide page title, hide post title, disable title, remove title
 Requires at least: 4.4
-Tested up to: 6.6
-Stable tag: 1.7.18
+Tested up to: 6.7
+Stable tag: 1.7.19
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
