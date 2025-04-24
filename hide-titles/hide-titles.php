@@ -4,7 +4,7 @@
  * Plugin Name:         Hide Titles
  * Plugin URI:          https://wordpress.org/plugins/hide-titles/
  * Description:         Remove Titles from Posts and Single Pages on WordPress.
- * Version:             1.8
+ * Version:             1.8.1
  * Requires at least:   4.4
  * Requires PHP:        7.0
  * Tested up to:        6.8
@@ -216,3 +216,51 @@ function hide_titles_filter_title($title, $id = null) {
 
 
 
+
+function ht_show_migration_notice() {
+    // Only show if new plugin is not active
+    if (is_plugin_active('daisy-titles/daisy-titles.php')) {
+        return;
+    }
+    
+    // Get install/activate URLs
+    $install_url = wp_nonce_url(
+        add_query_arg([
+            'action' => 'install-plugin',
+            'plugin' => 'daisy-titles'
+        ], admin_url('update.php')),
+        'install-plugin_daisy-titles'
+    );
+    
+    $activate_url = '';
+    if (file_exists(WP_PLUGIN_DIR . '/daisy-titles/daisy-titles.php')) {
+        $activate_url = wp_nonce_url(
+            add_query_arg([
+                'action' => 'activate',
+                'plugin' => 'daisy-titles/daisy-titles.php'
+            ], admin_url('plugins.php')),
+            'activate-plugin_daisy-titles/daisy-titles.php'
+        );
+    }
+    ?>
+    <div class="notice notice-error">
+        <h4><?php esc_html_e('Important Notice About Hide Titles', 'hide-titles'); ?></h4>
+        <p>
+            <?php _e('This plugin is no longer maintained. Please migrate to our new improved plugin <b style="color: blue;">"Daisy Titles"</b> for continued support, new features, and future updates.', 'hide-titles'); ?>
+        </p>
+        <p>
+            <?php if ($activate_url) : ?>
+                <a href="<?php echo esc_url($activate_url); ?>" class="button button-primary">
+                    <?php esc_html_e('Activate Daisy Titles Now', 'hide-titles'); ?>
+                </a>
+            <?php else : ?>
+                <a href="<?php echo esc_url($install_url); ?>" class="button button-primary">
+                    <?php esc_html_e('Migrate to Daisy Titles Now', 'hide-titles'); ?>
+                </a>
+            <?php endif; ?>
+        </p>
+    </div>
+    <?php
+}
+
+add_action('admin_notices', 'ht_show_migration_notice');
