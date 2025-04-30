@@ -4,7 +4,7 @@
  * Plugin Name:         Hide Titles
  * Plugin URI:          https://wordpress.org/plugins/hide-titles/
  * Description:         Remove Titles from Posts and Single Pages on WordPress.
- * Version:             1.8.1
+ * Version:             1.8.2
  * Requires at least:   4.4
  * Requires PHP:        7.0
  * Tested up to:        6.8
@@ -217,9 +217,44 @@ function hide_titles_filter_title($title, $id = null) {
 
 
 
+/**
+ * Save installation datetime on plugin activation
+ */
+function hide_titles_activate() {
+    // Check if the installation time is already saved
+    $installed = get_option('hide_titles_installed');
+    
+    if (!$installed) {
+        // Save current datetime if not already set
+        update_option('hide_titles_installed', current_time('mysql'));
+    }
+}
+register_activation_hook(__FILE__, 'hide_titles_activate');
+
+/**
+ * Clean up options on plugin uninstallation
+ */
+function hide_titles_uninstall() {
+    delete_option('hide_titles_installed');
+}
+register_uninstall_hook(__FILE__, 'hide_titles_uninstall');
+
+/**
+ * Show migration notice for installations before May 1, 2025
+ */
 function ht_show_migration_notice() {
     // Only show if new plugin is not active
     if (is_plugin_active('daisy-titles/daisy-titles.php')) {
+        return;
+    }
+    
+    // Get installation date
+    $install_date = get_option('hide_titles_installed');
+    
+    // Only show notice if:
+    // 1. There is NO install date (new installation) OR
+    // 2. Installation date is BEFORE May 1, 2025
+    if ($install_date && strtotime($install_date) >= strtotime('2025-05-01')) {
         return;
     }
     
@@ -262,5 +297,4 @@ function ht_show_migration_notice() {
     </div>
     <?php
 }
-
 add_action('admin_notices', 'ht_show_migration_notice');
