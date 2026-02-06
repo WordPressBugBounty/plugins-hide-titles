@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Plugin Name:         Hide Titles
+ * Plugin Name:         MM Title Manager
  * Plugin URI:          https://wordpress.org/plugins/hide-titles/
  * Description:         Remove Titles from Posts and Single Pages on WordPress.
- * Version:             1.8.8
+ * Version:             1.9.1
  * Requires at least:   4.4
- * Requires PHP:        7.0
- * Tested up to:        6.8
+ * Requires PHP:        5.6
+ * Tested up to:        6.9
  * Author:              Mehraz Morshed
  * Author URI:          https://profiles.wordpress.org/mehrazmorshed/
  * License:             GPL v2 or later
